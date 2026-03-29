@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300;
+  }
+}
+
+@layer utilities {
+  /* Initial hidden states for scroll animations */
+  .scroll-hidden {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .scroll-hidden.slide-left-init {
+    transform: translateX(-40px);
+  }
+  .scroll-hidden.slide-right-init {
+    transform: translateX(40px);
+  }
+  .scroll-visible {
+    opacity: 1 !important;
+    transform: translate(0, 0) !important;
+  }
+
+  /* Timeline */
+  .timeline-line {
+    transform-origin: top;
+    transform: scaleY(0);
+    transition: transform 1.2s ease;
+  }
+  .timeline-line.line-visible {
+    transform: scaleY(1);
+  }
+
+  /* Skill bar */
+  .skill-bar-fill {
+    width: 0%;
+    transition: width 1s ease;
+  }
+
+  /* Card hover */
+  .project-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .project-card:hover {
+    transform: translateY(-8px);
+  }
+}
