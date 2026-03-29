@@ -1,0 +1,143 @@
+{
+  "meta": { "updatedAt": "2026-03-28" },
+  "profile": {
+    "name": { "ko": "이강현", "en": "Ganghyun Lee" },
+    "title": {
+      "ko": "사용자 경험을 중시하는 프론트엔드 개발자",
+      "en": "Frontend Developer focused on User Experience"
+    },
+    "email": "vlslrtm2751@gmail.com",
+    "github": "https://github.com/vlslrtm2751",
+    "linkedin": "https://www.linkedin.com/in/강현-이-033815378",
+    "phone": "010-5332-0870",
+    "location": { "ko": "서울 강북구", "en": "Gangbuk-gu, Seoul" },
+    "intro": {
+      "ko": "사용자가 편리해야 좋은 UI/UX다 라는 철학으로 인터페이스를 구성합니다. 꼼꼼하고 세심한 UI 구현을 추구하며, 팀과의 협업을 중시합니다.",
+      "en": "I build interfaces with the philosophy that good UI/UX means convenience for users. I pursue meticulous UI implementation and value team collaboration."
+    },
+    "profileImage": "/images/profile.jpg"
+  },
+  "skills": {
+    "language": ["TypeScript", "JavaScript (ES6+)", "HTML5", "CSS3"],
+    "framework": ["Vue.js 3", "Tailwind CSS", "Vuetify 3", "Bootstrap"],
+    "db": ["MySQL", "AWS EC2", "Vite"],
+    "etc": ["Jira", "Confluence", "Git", "GitHub", "Figma", "REST API"]
+  },
+  "experiences": [
+    {
+      "company": { "ko": "(주)타이니피아", "en": "Tinypia Co., Ltd." },
+      "role": { "ko": "개발팀 / 연구원", "en": "Developer / Researcher" },
+      "period": { "start": "2025.09", "end": null },
+      "tasks": {
+        "ko": [
+          "유연근무제 모듈 전체 단독 구현 (22개 페이지)",
+          "인사고과(ESS) 모듈 신규 도입 — 점수 계산 엔진 설계",
+          "직책 권한 관리를 매트릭스 테이블로 통합 개선",
+          "GridStack 도입, 홈 대시보드 위젯 드래그·리사이즈 구현"
+        ],
+        "en": [
+          "Sole implementation of Flexible Work module (22 pages)",
+          "Introduced ESS module — designed score calculation engine",
+          "Unified role permission management into matrix table",
+          "Integrated GridStack for draggable/resizable dashboard widgets"
+        ]
+      },
+      "techStack": ["Vue.js 3", "TypeScript", "Vuetify 3", "Pinia", "Vite"]
+    },
+    {
+      "company": { "ko": "주식회사 제이앤솔루션", "en": "J&Solution Co., Ltd." },
+      "role": { "ko": "R&D연구소 / 연구원", "en": "R&D Researcher" },
+      "period": { "start": "2023.11", "end": "2025.08" },
+      "tasks": {
+        "ko": [
+          "전자계약 서비스 프론트엔드 전담 개발",
+          "공공기관 입찰 시스템 UI 구축",
+          "Figma 디자인 시스템 구축 및 컴포넌트 라이브러리 개발",
+          "REST API 연동 및 상태 관리 최적화"
+        ],
+        "en": [
+          "Dedicated frontend development for electronic contract service",
+          "UI development for public institution bidding system",
+          "Built Figma design system and component library",
+          "REST API integration and state management optimization"
+        ]
+      },
+      "techStack": ["Vue.js 3", "TypeScript", "Vuetify 3", "Pinia", "Vite", "Figma"]
+    }
+  ],
+  "projects": [
+    {
+      "name": { "ko": "프로필 노션 웹페이지", "en": "Profile Notion Webpage" },
+      "desc": {
+        "ko": "노션에서 작성된 이력서를 자동으로 웹페이지에 표시하는 Vue.js 3 프로젝트",
+        "en": "Vue.js 3 project that automatically displays Notion-based resume on a webpage"
+      },
+      "period": "2026.03",
+      "techStack": ["Vue.js 3", "TypeScript", "Tailwind CSS", "Notion API", "GitHub Actions"],
+      "github": "https://github.com/vlslrtm2751/profile-notion",
+      "demo": null
+    },
+    {
+      "name": { "ko": "유연근무제 모듈", "en": "Flexible Work Module" },
+      "desc": {
+        "ko": "HR 시스템 내 유연근무제 관리 모듈 단독 구현 (22개 페이지)",
+        "en": "Sole implementation of flexible work management module (22 pages) in HR system"
+      },
+      "period": "2025.09 ~ 2026.01",
+      "techStack": ["Vue.js 3", "TypeScript", "Vuetify 3", "Pinia"],
+      "github": null,
+      "demo": null
+    },
+    {
+      "name": { "ko": "홈 대시보드 위젯", "en": "Home Dashboard Widget" },
+      "desc": {
+        "ko": "GridStack을 활용한 드래그 및 리사이즈 가능한 홈 대시보드 위젯 구현",
+        "en": "Draggable and resizable home dashboard widgets using GridStack"
+      },
+      "period": "2026.01 ~ 2026.02",
+      "techStack": ["Vue.js 3", "TypeScript", "GridStack", "Vuetify 3"],
+      "github": null,
+      "demo": null
+    }
+  ],
+  "certifications": [
+    {
+      "name": { "ko": "정보처리기사", "en": "Engineer Information Processing" },
+      "issuer": { "ko": "한국산업인력공단", "en": "HRD Korea" },
+      "date": "2021.08.20",
+      "tag": "개발"
+    },
+    {
+      "name": { "ko": "SQLD", "en": "SQLD" },
+      "issuer": { "ko": "한국데이터산업진흥원", "en": "Korea Data Agency" },
+      "date": "2022.04.08",
+      "tag": "DB"
+    },
+    {
+      "name": { "ko": "웹디자인기능사", "en": "Web Design Craftsman" },
+      "issuer": { "ko": "한국산업인력공단", "en": "HRD Korea" },
+      "date": "2021.07.16",
+      "tag": "디자인"
+    }
+  ],
+  "education": [
+    {
+      "institution": { "ko": "홍익대학교(서울)", "en": "Hongik University" },
+      "major": { "ko": "컴퓨터공학과", "en": "Computer Engineering" },
+      "period": { "start": "2016.03", "end": "2022.08" },
+      "gpa": "3.35/4.5"
+    },
+    {
+      "institution": { "ko": "청년취업사관학교(SESAC)", "en": "SESAC" },
+      "major": {
+        "ko": "PWA 웹프론트엔드 개발 과정",
+        "en": "PWA Web Frontend Development"
+      },
+      "period": { "start": "2021.11", "end": "2022.04" }
+    }
+  ],
+  "military": {
+    "ko": "육군 병장 만기 전역 (2018.03 ~ 2019.11)",
+    "en": "Completed mandatory military service, Corporal (Mar 2018 – Nov 2019)"
+  }
+}
