@@ -1,15 +1,25 @@
-name: Fetch Notion Resume
+name: Sync Notion & Deploy
 
 on:
   schedule:
-    - cron: '0 0 * * *'   # daily at midnight UTC
-  workflow_dispatch:        # allow manual trigger
+    - cron: '0 0 * * *'   # 매일 00:00 UTC (= 09:00 KST)
+  workflow_dispatch:        # 수동 트리거 허용
+
+permissions:
+  contents: write   # resume.json 커밋
+  pages: write      # GitHub Pages 배포
+  id-token: write   # OIDC token (deploy-pages 필요)
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
-  fetch-and-commit:
+  sync-and-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout repository
@@ -24,20 +34,42 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # ── 1. Notion → resume.json ──────────────────────────────────────────────
       - name: Fetch resume from Notion
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_PAGE_ID: ${{ secrets.NOTION_PAGE_ID }}
         run: npm run fetch-notion
 
-      - name: Commit changes if any
+      # resume.json이 변경된 경우 커밋 (기록 보존용)
+      - name: Commit updated resume.json
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add src/data/resume.json
           if git diff --cached --quiet; then
-            echo "No changes to commit."
+            echo "resume.json unchanged — skipping commit."
           else
-            git commit -m "chore: update resume.json from Notion [skip ci]"
+            git commit -m "chore: sync resume.json from Notion"
             git push
           fi
+
+      # ── 2. Build ─────────────────────────────────────────────────────────────
+      - name: Build
+        env:
+          # 프로젝트 페이지일 경우 /profile-notion/ , 커스텀 도메인이면 /
+          VITE_BASE_URL: ${{ vars.VITE_BASE_URL || '/' }}
+        run: npm run build
+
+      # ── 3. Deploy to GitHub Pages ─────────────────────────────────────────────
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -10,6 +10,8 @@
     "fetch-notion": "node scripts/fetch-notion.js"
   },
   "dependencies": {
+    "@notionhq/client": "^5.16.0",
+    "dotenv": "^17.3.1",
     "vue": "^3.5.13"
   },
   "devDependencies": {

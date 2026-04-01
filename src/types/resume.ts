@@ -43,6 +43,7 @@ export interface Project {
   name: LocaleString
   desc: LocaleString
   period: string
+  details?: string[]
   techStack: string[]
   github: string | null
   demo: string | null
@@ -75,5 +76,6 @@ export interface ResumeData {
   projects: Project[]
   certifications: Certification[]
   education: Education[]
+  training?: Education[]
   military: LocaleString
 }

@@ -28,9 +28,21 @@
             </div>
 
             <!-- Description -->
-            <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed flex-1 mb-4">
+            <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
               {{ t(project.desc) }}
             </p>
+
+            <!-- Detail bullets -->
+            <ul v-if="project.details && project.details.length" class="flex-1 space-y-1 mb-4">
+              <li
+                v-for="detail in project.details"
+                :key="detail"
+                class="flex items-start gap-1.5 text-xs text-gray-500 dark:text-gray-400 leading-relaxed"
+              >
+                <span class="mt-1 w-1 h-1 rounded-full bg-blue-400 flex-shrink-0" />
+                {{ detail }}
+              </li>
+            </ul>
 
             <!-- Tech tags — slide up on hover -->
             <div class="flex flex-wrap gap-1.5 mb-4 overflow-hidden max-h-20 group-hover:max-h-40 transition-all duration-300">
