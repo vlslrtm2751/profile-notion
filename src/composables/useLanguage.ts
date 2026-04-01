@@ -10,7 +10,7 @@ export function useLanguage() {
   }
 
   function t(obj: { ko: string; en: string }): string {
-    return obj[lang.value]
+    return obj[lang.value] || obj.ko
   }
 
   return {
