@@ -57,8 +57,7 @@ jobs:
       # ── 2. Build ─────────────────────────────────────────────────────────────
       - name: Build
         env:
-          # 프로젝트 페이지일 경우 /profile-notion/ , 커스텀 도메인이면 /
-          VITE_BASE_URL: ${{ vars.VITE_BASE_URL || '/' }}
+          VITE_BASE_URL: /profile-notion/
         run: npm run build
 
       # ── 3. Deploy to GitHub Pages ─────────────────────────────────────────────

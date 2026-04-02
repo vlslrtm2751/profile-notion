@@ -121,7 +121,7 @@ import type { ResumeData } from '@/types/resume'
 const resume = resumeData as ResumeData
 const { lang, t } = useLanguage()
 const showFallback = ref(false)
-const profileImage = resume.profile.profileImage
+const profileImage = import.meta.env.BASE_URL.replace(/\/$/, '') + resume.profile.profileImage
 
 const titleText = computed(() =>
   lang.value === 'ko'

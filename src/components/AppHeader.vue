@@ -12,7 +12,7 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
       <!-- Logo -->
       <a href="#hero" class="font-bold text-xl bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-        GH.
+        &lt;KH /&gt;
       </a>
 
       <!-- Desktop Nav -->

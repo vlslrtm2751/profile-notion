@@ -140,7 +140,7 @@ function extractProfile(pageTitle, blocks) {
   }
 
   return {
-    name: { ko: name, en: 'Ganghyun Lee' },
+    name: { ko: name, en: 'Kanghyun Lee' },
     title: {
       ko: titleKo,
       en: titleEn,
