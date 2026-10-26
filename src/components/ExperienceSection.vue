@@ -3,7 +3,7 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6">
       <h2 class="scroll-hidden text-3xl font-bold text-center mb-14">
         <span class="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-          {{ lang === 'ko' ? '경력' : 'Experience' }}
+          {{ ui('section.experience') }}
         </span>
       </h2>
 
@@ -37,7 +37,7 @@
                     {{ t(exp.company) }}
                   </h3>
                   <span class="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap mt-1">
-                    {{ exp.period.start }} ~ {{ exp.period.end ?? (lang === 'ko' ? '재직중' : 'Present') }}
+                    {{ exp.period.start }} ~ {{ exp.period.end ?? ui('experience.present') }}
                   </span>
                 </div>
                 <p class="text-blue-500 text-sm font-medium mb-4">{{ t(exp.role) }}</p>
@@ -45,7 +45,7 @@
                 <!-- Task list -->
                 <ul class="space-y-1.5 mb-4">
                   <li
-                    v-for="task in (lang === 'ko' ? exp.tasks.ko : exp.tasks.en)"
+                    v-for="task in tList(exp.tasks)"
                     :key="task"
                     class="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300"
                   >
@@ -80,7 +80,7 @@ import resumeData from '@/data/resume.json'
 import type { ResumeData } from '@/types/resume'
 
 const resume = resumeData as ResumeData
-const { lang, t } = useLanguage()
+const { t, tList, ui } = useLanguage()
 
 onMounted(() => {
   const lineEl = document.querySelector('.timeline-line')

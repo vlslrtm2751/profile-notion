@@ -1,6 +1,13 @@
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch, toValue, type MaybeRefOrGetter } from 'vue'
 
-export function useTypewriter(text: string, speed = 80, startDelay = 500) {
+/**
+ * Types `source` out character by character.
+ *
+ * The source is reactive: when it changes — the language toggle being the only
+ * caller that does this — the effect restarts from an empty string instead of
+ * keeping the text it captured at setup time.
+ */
+export function useTypewriter(source: MaybeRefOrGetter<string>, speed = 80, startDelay = 500) {
   const displayText = ref('')
   const showCursor = ref(true)
 
@@ -8,11 +15,15 @@ export function useTypewriter(text: string, speed = 80, startDelay = 500) {
   let typingInterval: ReturnType<typeof setInterval> | null = null
   let startTimeout: ReturnType<typeof setTimeout> | null = null
 
-  onMounted(() => {
-    cursorInterval = setInterval(() => {
-      showCursor.value = !showCursor.value
-    }, 530)
+  function stopTyping() {
+    if (typingInterval) { clearInterval(typingInterval); typingInterval = null }
+    if (startTimeout) { clearTimeout(startTimeout); startTimeout = null }
+  }
 
+  function startTyping(delay: number) {
+    stopTyping()
+    const text = toValue(source)
+    displayText.value = ''
     let index = 0
     startTimeout = setTimeout(() => {
       typingInterval = setInterval(() => {
@@ -20,16 +31,22 @@ export function useTypewriter(text: string, speed = 80, startDelay = 500) {
           displayText.value += text[index]
           index++
         } else {
-          if (typingInterval) clearInterval(typingInterval)
+          stopTyping()
         }
       }, speed)
-    }, startDelay)
+    }, delay)
+  }
+
+  onMounted(() => {
+    cursorInterval = setInterval(() => { showCursor.value = !showCursor.value }, 530)
+    startTyping(startDelay)
   })
 
+  watch(() => toValue(source), () => startTyping(0))
+
   onUnmounted(() => {
-    if (cursorInterval) clearInterval(cursorInterval)
-    if (typingInterval) clearInterval(typingInterval)
-    if (startTimeout)  clearTimeout(startTimeout)
+    if (cursorInterval) { clearInterval(cursorInterval); cursorInterval = null }
+    stopTyping()
   })
 
   return { displayText, showCursor }

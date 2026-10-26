@@ -100,9 +100,9 @@
       <a
         href="#about"
         class="inline-flex flex-col items-center gap-1 text-gray-400 hover:text-blue-500 transition-colors animate-bounce"
-        aria-label="Scroll to About section"
+        :aria-label="ui('a11y.scrollToAbout')"
       >
-        <span class="text-xs">Scroll</span>
+        <span class="text-xs">{{ ui('hero.scroll') }}</span>
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
@@ -115,27 +115,28 @@
 import { ref, computed } from 'vue'
 import { useLanguage } from '@/composables/useLanguage'
 import { useTypewriter } from '@/composables/useTypewriter'
+import { withBase } from '@/utils/assets'
+import { yearsOfExperience, countSkills } from '@/utils/stats'
 import resumeData from '@/data/resume.json'
 import type { ResumeData } from '@/types/resume'
 
 const resume = resumeData as ResumeData
-const { lang, t } = useLanguage()
+const { t, ui } = useLanguage()
 const showFallback = ref(false)
-const profileImage = import.meta.env.BASE_URL.replace(/\/$/, '') + resume.profile.profileImage
+const profileImage = withBase(resume.profile.profileImage)
 
-const titleText = computed(() =>
-  lang.value === 'ko'
-    ? resume.profile.title.ko
-    : resume.profile.title.en
-)
+// t() falls back to Korean, so this shows whatever Notion actually provides.
+const titleText = computed(() => t(resume.profile.title))
 
-const { displayText, showCursor } = useTypewriter(titleText.value, 60, 1000)
+const { displayText, showCursor } = useTypewriter(titleText, 60, 1000)
 
-const stats = [
-  { value: '2년+', label: lang.value === 'ko' ? '경력' : 'Experience', delay: '0.6s' },
-  { value: '3개+', label: lang.value === 'ko' ? '프로젝트' : 'Projects', delay: '0.8s' },
-  { value: '22개+', label: lang.value === 'ko' ? '모듈' : 'Modules', delay: '1.0s' }
-]
+// Every figure is derived from resume.json. The previous values ("2년+",
+// "3개+", "22개+ 모듈") were typed in by hand and had no source in the data.
+const stats = computed(() => [
+  { value: `${yearsOfExperience(resume.experiences, new Date())}+`, label: ui('stat.years'), delay: '0.6s' },
+  { value: String(countSkills(resume.skills)), label: ui('stat.skills'), delay: '0.8s' },
+  { value: String(resume.certifications.length), label: ui('stat.certifications'), delay: '1.0s' }
+])
 </script>
 
 <style scoped>
