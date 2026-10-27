@@ -13,9 +13,7 @@ export default {
       animation: {
         'fade-up': 'fadeUp 0.6s ease forwards',
         'slide-left': 'slideLeft 0.6s ease forwards',
-        'slide-right': 'slideRight 0.6s ease forwards',
-        'typewriter': 'typewriter 0.1s step-end forwards',
-        'progress': 'progressFill 1s ease forwards'
+        'slide-right': 'slideRight 0.6s ease forwards'
       },
       keyframes: {
         fadeUp: {

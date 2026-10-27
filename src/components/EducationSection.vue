@@ -3,14 +3,14 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6">
       <h2 class="scroll-hidden text-3xl font-bold text-center mb-14">
         <span class="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-          {{ lang === 'ko' ? '학력 및 교육' : 'Education' }}
+          {{ ui('section.education') }}
         </span>
       </h2>
 
       <!-- 학력 -->
       <div class="mb-10">
         <h3 class="scroll-hidden text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-4">
-          {{ lang === 'ko' ? '학력' : 'Academic' }}
+          {{ ui('education.academic') }}
         </h3>
         <div class="space-y-4">
           <div
@@ -39,7 +39,7 @@
       <!-- 교육 -->
       <div v-if="resume.training && resume.training.length" class="mb-10">
         <h3 class="scroll-hidden text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-4">
-          {{ lang === 'ko' ? '교육' : 'Training' }}
+          {{ ui('education.training') }}
         </h3>
         <div class="space-y-4">
           <div
@@ -65,7 +65,7 @@
       <!-- 병역 -->
       <div>
         <h3 class="scroll-hidden text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-4">
-          {{ lang === 'ko' ? '병역' : 'Military Service' }}
+          {{ ui('education.military') }}
         </h3>
         <div class="scroll-hidden bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
           <div class="flex items-start gap-3">
@@ -76,7 +76,7 @@
             </div>
             <div>
               <p class="font-bold text-gray-900 dark:text-white">
-                {{ lang === 'ko' ? '병역사항' : 'Military Service' }}
+                {{ ui('education.militaryLabel') }}
               </p>
               <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
                 {{ t(resume.military) }}
@@ -96,5 +96,5 @@ import resumeData from '@/data/resume.json'
 import type { ResumeData } from '@/types/resume'
 
 const resume = resumeData as ResumeData
-const { lang, t } = useLanguage()
+const { t, ui } = useLanguage()
 </script>

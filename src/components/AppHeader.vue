@@ -26,7 +26,7 @@
             ? 'text-blue-500'
             : 'text-gray-600 dark:text-gray-300'"
         >
-          {{ item.label[lang] }}
+          {{ ui(item.labelKey) }}
         </a>
       </nav>
 
@@ -35,6 +35,7 @@
         <!-- Language toggle -->
         <button
           class="text-xs font-semibold px-3 py-1 rounded-full border border-gray-300 dark:border-gray-600 hover:border-blue-500 hover:text-blue-500 transition-colors"
+          :aria-label="ui('a11y.toggleLang')"
           @click="$emit('toggle-lang')"
         >
           {{ lang === 'ko' ? 'EN' : 'KO' }}
@@ -43,7 +44,7 @@
         <!-- Dark mode toggle -->
         <button
           class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-          :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+          :aria-label="isDark ? ui('a11y.toLight') : ui('a11y.toDark')"
           @click="$emit('toggle-dark')"
         >
           <span v-if="isDark">☀️</span>
@@ -53,7 +54,7 @@
         <!-- Mobile hamburger -->
         <button
           class="md:hidden w-8 h-8 flex flex-col items-center justify-center gap-1.5"
-          aria-label="Toggle menu"
+          :aria-label="ui('a11y.toggleMenu')"
           @click="menuOpen = !menuOpen"
         >
           <span
@@ -85,7 +86,7 @@
         :class="activeSection === item.id ? 'text-blue-500' : ''"
         @click="menuOpen = false"
       >
-        {{ item.label[lang] }}
+        {{ ui(item.labelKey) }}
       </a>
     </div>
   </header>
@@ -95,7 +96,8 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useProgressBar } from '@/composables/useProgressBar'
 import { useScrollSpy } from '@/composables/useScrollSpy'
-import type { Lang } from '@/composables/useLanguage'
+import { useLanguage, type Lang } from '@/composables/useLanguage'
+import type { UiKey } from '@/i18n/ui'
 
 defineProps<{
   isDark: boolean
@@ -106,19 +108,20 @@ defineEmits<{
   'toggle-lang': []
 }>()
 
+const { ui } = useLanguage()
 const { progress } = useProgressBar()
 const { activeSection } = useScrollSpy(['hero', 'about', 'skills', 'experience', 'projects', 'certifications', 'education'])
 
 const scrolled = ref(false)
 const menuOpen = ref(false)
 
-const navItems = [
-  { id: 'about',          label: { ko: 'About',          en: 'About'          } },
-  { id: 'skills',         label: { ko: 'Skills',         en: 'Skills'         } },
-  { id: 'experience',     label: { ko: '경력',            en: 'Experience'     } },
-  { id: 'projects',       label: { ko: '프로젝트',        en: 'Projects'       } },
-  { id: 'certifications', label: { ko: '자격증',          en: 'Certifications' } },
-  { id: 'education',      label: { ko: '학력',            en: 'Education'      } }
+const navItems: { id: string; labelKey: UiKey }[] = [
+  { id: 'about',          labelKey: 'nav.about' },
+  { id: 'skills',         labelKey: 'nav.skills' },
+  { id: 'experience',     labelKey: 'nav.experience' },
+  { id: 'projects',       labelKey: 'nav.projects' },
+  { id: 'certifications', labelKey: 'nav.certifications' },
+  { id: 'education',      labelKey: 'nav.education' }
 ]
 
 function handleScroll() {

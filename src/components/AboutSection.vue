@@ -2,7 +2,7 @@
   <section id="about" class="py-20 bg-white dark:bg-gray-950">
     <div class="max-w-5xl mx-auto px-4 sm:px-6">
       <h2 class="scroll-hidden text-3xl font-bold text-center mb-14">
-        <span class="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">About Me</span>
+        <span class="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">{{ ui('section.about') }}</span>
       </h2>
 
       <div class="flex flex-col md:flex-row items-center gap-12">
@@ -10,7 +10,7 @@
         <div class="scroll-hidden slide-left-init flex-shrink-0">
           <div class="w-48 h-48 rounded-full overflow-hidden ring-4 ring-blue-500/20 shadow-2xl mx-auto">
             <img
-              :src="resume.profile.profileImage"
+              :src="profileImage"
               :alt="t(resume.profile.name)"
               class="w-full h-full object-cover"
               @error="showFallback = true"
@@ -68,10 +68,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useLanguage } from '@/composables/useLanguage'
+import { withBase } from '@/utils/assets'
 import resumeData from '@/data/resume.json'
 import type { ResumeData } from '@/types/resume'
 
 const resume = resumeData as ResumeData
-const { t } = useLanguage()
+const { t, ui } = useLanguage()
 const showFallback = ref(false)
+const profileImage = withBase(resume.profile.profileImage)
 </script>

@@ -12,6 +12,7 @@ import { writeFileSync, readFileSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { config } from 'dotenv'
+import { withResolvedTimestamp } from './lib/resume-sync.js'
 
 config()
 
@@ -456,10 +457,24 @@ function extractMilitary(blocks) {
 
 // ─── Main transform ───────────────────────────────────────────────────────────
 
+function readExistingResume() {
+  try {
+    return JSON.parse(readFileSync(OUTPUT_PATH, 'utf-8'))
+  } catch (err) {
+    // Missing is normal on a fresh clone; unreadable is not — say which, or a
+    // corrupted file would quietly disable every per-section fallback below.
+    if (err.code !== 'ENOENT') {
+      console.warn(`[fetch-notion] Could not read existing resume.json (${err.message}) — continuing without fallbacks.`)
+    }
+    return null
+  }
+}
+
 function transformNotionToResume(page, blocks) {
   const pageTitle = rt(page.properties?.title?.title ?? [])
 
-  const existing = JSON.parse(readFileSync(OUTPUT_PATH, 'utf-8'))
+  const existing = readExistingResume()
+  const fallback = existing ?? {}
 
   const profile = extractProfile(pageTitle, blocks)
   const skills = extractSkills(blocks)
@@ -470,17 +485,21 @@ function transformNotionToResume(page, blocks) {
   const training = extractTraining(blocks)
   const military = extractMilitary(blocks)
 
-  return {
-    meta: { updatedAt: new Date().toISOString().slice(0, 10) },
-    profile: { ...existing.profile, ...Object.fromEntries(Object.entries(profile).filter(([, v]) => v && (typeof v !== 'object' || Object.values(v).some(Boolean)))) },
-    skills: Object.keys(skills).length ? skills : existing.skills,
-    experiences: experiences.length ? experiences : existing.experiences,
-    projects: projects.length ? projects : existing.projects,
-    certifications: certifications.length ? certifications : existing.certifications,
-    education: education.length ? education : existing.education,
-    training: training.length ? training : (existing.training ?? []),
-    military: military ?? existing.military,
+  const next = {
+    meta: { updatedAt: '' },
+    profile: { ...fallback.profile, ...Object.fromEntries(Object.entries(profile).filter(([, v]) => v && (typeof v !== 'object' || Object.values(v).some(Boolean)))) },
+    skills: Object.keys(skills).length ? skills : (fallback.skills ?? {}),
+    experiences: experiences.length ? experiences : (fallback.experiences ?? []),
+    projects: projects.length ? projects : (fallback.projects ?? []),
+    certifications: certifications.length ? certifications : (fallback.certifications ?? []),
+    education: education.length ? education : (fallback.education ?? []),
+    training: training.length ? training : (fallback.training ?? []),
+    military: military ?? fallback.military ?? { ko: '', en: '' },
   }
+
+  // updatedAt only advances when something other than the timestamp changed,
+  // so an unchanged fetch rewrites the file byte-for-byte and git stays quiet.
+  return withResolvedTimestamp(existing, next, new Date().toISOString().slice(0, 10))
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
@@ -525,6 +544,7 @@ async function main() {
   console.log(`  projects: ${resume.projects?.length}`)
   console.log(`  certifications: ${resume.certifications?.length}`)
   console.log(`  education: ${resume.education?.length}`)
+  console.log(`  updatedAt: ${resume.meta.updatedAt}`)
 }
 
 main().catch((err) => {

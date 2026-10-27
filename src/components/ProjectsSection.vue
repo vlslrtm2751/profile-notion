@@ -3,7 +3,7 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6">
       <h2 class="scroll-hidden text-3xl font-bold text-center mb-14">
         <span class="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-          {{ lang === 'ko' ? '프로젝트' : 'Projects' }}
+          {{ ui('section.projects') }}
         </span>
       </h2>
 
@@ -73,7 +73,7 @@
                 v-else
                 class="text-xs text-gray-300 dark:text-gray-600 italic"
               >
-                {{ lang === 'ko' ? '비공개' : 'Private' }}
+                {{ ui('projects.private') }}
               </span>
               <a
                 v-if="project.demo"
@@ -101,5 +101,5 @@ import resumeData from '@/data/resume.json'
 import type { ResumeData } from '@/types/resume'
 
 const resume = resumeData as ResumeData
-const { lang, t } = useLanguage()
+const { t, ui } = useLanguage()
 </script>

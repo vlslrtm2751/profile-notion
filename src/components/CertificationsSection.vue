@@ -3,7 +3,7 @@
     <div class="max-w-5xl mx-auto px-4 sm:px-6">
       <h2 class="scroll-hidden text-3xl font-bold text-center mb-14">
         <span class="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-          {{ lang === 'ko' ? '자격증' : 'Certifications' }}
+          {{ ui('section.certifications') }}
         </span>
       </h2>
 
@@ -50,11 +50,12 @@ import resumeData from '@/data/resume.json'
 import type { ResumeData } from '@/types/resume'
 
 const resume = resumeData as ResumeData
-const { lang, t } = useLanguage()
+const { t, ui } = useLanguage()
 
 const tagColorMap: Record<string, string> = {
-  '개발': 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
-  'DB':   'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300',
+  '개발':   'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
+  '비개발': 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300',
+  'DB':     'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300',
   '디자인': 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300'
 }
 

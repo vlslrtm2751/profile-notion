@@ -1,5 +1,5 @@
 <template>
-  <div :class="['min-h-screen', isDark ? 'dark' : '']">
+  <div class="min-h-screen">
     <AppHeader
       :is-dark="isDark"
       :lang="lang"
@@ -78,14 +78,18 @@
           </svg>
         </a>
       </div>
-      <p>© 2026 이강현 · Built with Vue.js 3 + Tailwind CSS</p>
+      <p>© {{ year }} {{ t(resume.profile.name) }} · {{ ui('footer.builtWith') }}</p>
+      <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">
+        {{ ui('footer.lastUpdated') }} {{ resume.meta.updatedAt }} · {{ ui('footer.syncedFrom') }}
+      </p>
     </footer>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from "vue";
+import { computed } from "vue";
 import { useLanguage } from "@/composables/useLanguage";
+import { useTheme } from "@/composables/useTheme";
 import { useScrollAnimation } from "@/composables/useScrollAnimation";
 import AppHeader from "@/components/AppHeader.vue";
 import HeroSection from "@/components/HeroSection.vue";
@@ -100,31 +104,11 @@ import type { ResumeData } from "@/types/resume";
 
 const resume = resumeData as ResumeData;
 
-const { lang, toggleLang } = useLanguage();
+const { lang, toggleLang, t, ui } = useLanguage();
+// Theme is resolved at module load and applied to <html> by useTheme, which
+// is what index.html's inline script has already done for the first paint.
+const { isDark, toggleDark } = useTheme();
 useScrollAnimation();
 
-const isDark = ref(false);
-
-function toggleDark() {
-  isDark.value = !isDark.value;
-}
-
-watch(isDark, (val) => {
-  if (val) {
-    document.documentElement.classList.add("dark");
-  } else {
-    document.documentElement.classList.remove("dark");
-  }
-  localStorage.setItem("theme", val ? "dark" : "light");
-});
-
-onMounted(() => {
-  const saved = localStorage.getItem("theme");
-  if (
-    saved === "dark" ||
-    (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches)
-  ) {
-    isDark.value = true;
-  }
-});
+const year = computed(() => new Date().getFullYear());
 </script>
