@@ -18,20 +18,29 @@ function initialTheme(): Theme {
 // onMounted, which rendered one light frame for every dark-mode visitor.
 const isDark = ref(initialTheme() === 'dark')
 
+// Applying the theme and remembering it are deliberately separate. Persisting
+// the resolved value on load would stamp a preference the visitor never chose
+// and stop the site following their OS theme from then on.
 if (typeof document !== 'undefined') {
   watch(isDark, (value) => {
     document.documentElement.classList.toggle('dark', value)
-    try {
-      localStorage.setItem(THEME_STORAGE_KEY, value ? 'dark' : 'light')
-    } catch {
-      // Private mode or blocked storage — the toggle still works for this visit.
-    }
   }, { immediate: true })
+}
+
+function remember(value: boolean) {
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, value ? 'dark' : 'light')
+  } catch {
+    // Private mode or blocked storage — the toggle still works for this visit.
+  }
 }
 
 export function useTheme() {
   return {
     isDark: readonly(isDark),
-    toggleDark: () => { isDark.value = !isDark.value }
+    toggleDark: () => {
+      isDark.value = !isDark.value
+      remember(isDark.value)
+    }
   }
 }
